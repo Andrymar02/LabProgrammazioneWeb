@@ -1,0 +1,93 @@
+### Aggiunta di un nuovo film
+POST http://localhost:3001/api/films/add
+Content-Type: application/json
+
+{
+  "title": "Tre Uomini ed una Gamba",
+  "favorite": true,
+  "rating": 5,
+  "watchDate": "2024-03-25",
+  "userID": 1
+}
+
+### Elimina il film con ID 10 (Inception)
+DELETE http://localhost:3001/api/films/delete/9
+
+
+### Chiedo TUTTI i film (Nessun filtro)
+GET http://localhost:3001/api/films
+
+### Chiedo i film PREFERITI
+GET http://localhost:3001/api/films?filter=favorite
+
+### Chiedo i film con VOTO 5
+GET http://localhost:3001/api/films?filter=best
+
+### Chiedo i film NON ANCORA VISTI
+GET http://localhost:3001/api/films?filter=unseen
+
+### Chiedo i film dell'ULTIMO MESE
+GET http://localhost:3001/api/films?filter=lastmonth
+
+
+### Modifica TOTALE del film con ID 1 (PUT)
+PUT http://localhost:3001/api/films/1
+Content-Type: application/json
+
+{
+  "title": "Pulp Fiction Director's Cut",
+  "favorite": true,
+  "rating": 5,
+  "watchDate": "2024-03-20",
+  "userID": 1
+}
+
+### Cambia SOLO IL VOTO del film con ID 1 (PATCH)
+PATCH http://localhost:3001/api/films/1/rating
+Content-Type: application/json
+
+{
+  "rating": 2
+}
+
+### Cambia SOLO IL PREFERITO del film con ID 1 (PATCH)
+PATCH http://localhost:3001/api/films/1/favorite
+Content-Type: application/json
+
+{
+  "favorite": false
+}
+
+### Test per autenticazione e sessioni
+POST http://localhost:3001/api/sessions
+content-type: application/json
+
+{
+  "username": "andrea.marranca@polito.it",
+  "password": "passwordSegreta123!" 
+}
+
+###
+
+POST http://localhost:3001/api/sessions
+content-type: application/json
+
+{
+  "username": "andrea.marranca@polito.it",
+  "password": "passwordSegreta123!" 
+}
+
+###
+
+DELETE http://localhost:3001/api/sessions/current
+
+
+### Creazione di un nuovo utente (Registrazione)
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "email": "andrea.marranca@polito.it",
+    "password": "passwordSegreta123!",
+    "name": "Andrea Marranca"
+}

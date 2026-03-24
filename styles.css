@@ -1,0 +1,32 @@
+/* Sovrascriviamo il blu di base per renderlo più simile allo screenshot */
+.bg-primary {
+    background-color: #3b71f3 !important;
+}
+
+.btn-primary {
+    background-color: #3b71f3;
+    border-color: #3b71f3;
+}
+
+/* Stile per il bottone "+" in basso a destra */
+.btn-add {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Hover effect sulle icone modifica/elimina */
+.bi-pencil:hover, .bi-trash:hover {
+    color: #3b71f3 !important;
+    cursor: pointer;
+}
+
+/* Hover leggero sulle righe dei film */
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease-in-out;
+}
