@@ -1,8 +1,10 @@
 import { useActionState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 export default function FilmForm({ filmToEdit, onSave, onCancel }) {
+  const navigate = useNavigate();
   const handleFormSubmit = async (prevState, formData) => {
     const title = formData.get('title');
     const favorite = formData.get('favorite') === 'on';
@@ -51,6 +53,7 @@ export default function FilmForm({ filmToEdit, onSave, onCancel }) {
     };
 
     onSave(submittedFilm);
+    navigate('/');
 
     return { messages: [], invalidFields: {} };
   };

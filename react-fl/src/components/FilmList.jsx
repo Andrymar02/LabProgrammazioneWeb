@@ -1,18 +1,21 @@
-import { ListGroup } from 'react-bootstrap'; // Rimosso Button, non serve più qui
+import { ListGroup, Button, Form } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom'; // Aggiunti import per il routing
 
-function FilmRow({ film, onEdit }) { // Aggiunto onEdit tra le props
-  // Formatta la data come "March 10, 2026"
+function FilmRow({ film, onDelete, onToggleFavorite, onRatingChange }) {
   const formattedDate = film.date ? film.date.format('MMMM D, YYYY') : '';
 
   return (
     <ListGroup.Item className="d-flex justify-content-between align-items-center py-3">
       
-      {/* Parte Sinistra: Cuore e Titolo */}
+      {/* Parte Sinistra: Checkbox Preferiti e Titolo */}
       <div className="d-flex align-items-center" style={{ width: '35%' }}>
-        <i 
-          className={`bi ${film.favorite ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'} me-3`}
-          style={{ cursor: 'pointer', fontSize: '1.1rem' }}
-        ></i>
+        <Form.Check 
+          type="checkbox"
+          id={`fav-check-${film.id}`}
+          className="me-3"
+          checked={film.favorite}
+          onChange={() => onToggleFavorite(film.id)} // Operazione in-line via checkbox
+        />
         <span style={{ fontSize: '1.1rem' }}>
           {film.title}
         </span>
@@ -30,24 +33,32 @@ function FilmRow({ film, onEdit }) { // Aggiunto onEdit tra le props
             <i 
               key={index} 
               className={`bi ${index < film.rating ? 'bi-star-fill' : 'bi-star'} text-warning me-1`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => onRatingChange(film.id, index + 1)} // Operazione in-line: cambio rating
             ></i>
           ))}
         </span>
-        {/* Agganciato l'evento onClick per la modifica */}
+        
+        <Link to={`/edit/${film.id}`} className="text-muted">
+            <i className="bi bi-pencil-square me-3" style={{ cursor: 'pointer', fontSize: '1.2rem' }}></i>
+        </Link>
+        
         <i 
-          className="bi bi-pencil-square me-3" 
-          style={{ cursor: 'pointer', fontSize: '1.2rem' }}
-          onClick={() => onEdit(film)}
+            className="bi bi-trash" 
+            style={{ cursor: 'pointer', fontSize: '1.2rem', color: 'red' }}
+            onClick={() => onDelete(film.id)} // Operazione in-line: eliminazione
         ></i>
-        <i className="bi bi-trash" style={{ cursor: 'pointer', fontSize: '1.2rem' }}></i>
       </div>
 
     </ListGroup.Item>
   );
 }
 
-export default function FilmList({ films, activeFilter, onEdit }) { // Aggiunto onEdit tra le props
-  // Genera il titolo dinamicamente
+export default function FilmList({ films, onDelete, onToggleFavorite, onRatingChange }) {
+  // Otteniamo il filtro attivo direttamente dall'URL!
+  const { filterLabel } = useParams();
+  const activeFilter = filterLabel || 'All';
+  
   const title = activeFilter === 'All' ? 'All films' : activeFilter;
 
   return (
@@ -59,10 +70,29 @@ export default function FilmList({ films, activeFilter, onEdit }) { // Aggiunto 
           <FilmRow 
             key={film.id} 
             film={film} 
-            onEdit={onEdit} // Passiamo la funzione alla singola riga
+            onDelete={onDelete}
+            onToggleFavorite={onToggleFavorite}
+            onRatingChange={onRatingChange}
           />
         ))}
       </ListGroup>
+
+      {/* Il bottone + ora naviga alla rotta /add */}
+      <Link to="/add">
+        <Button 
+          variant="primary" 
+          className="rounded-circle position-fixed shadow d-flex align-items-center justify-content-center"
+          style={{ 
+            width: '56px', 
+            height: '56px', 
+            bottom: '2rem', 
+            right: '2rem',
+            fontSize: '1.8rem'
+          }}
+        >
+          <i className="bi bi-plus"></i>
+        </Button>
+      </Link>
     </div>
   );
 }
